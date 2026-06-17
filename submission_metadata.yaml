@@ -1,0 +1,21 @@
+team_name: "placeholder-team-name"
+primary_contact:
+  name: "Placeholder Name"
+  email: "placeholder@email.com"
+  phone: "+91-0000000000"
+github_repo: "https://github.com/placeholder/india-runs-ranker"
+sandbox_link: "https://huggingface.co/spaces/placeholder/india-runs-ranker"
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./output/submission.csv"
+compute:
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: true
+  pre_computation_time_minutes: 3
+ai_tools_used:
+  - "Claude"
+  - "Gemini"
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  reproduction_tested: true
