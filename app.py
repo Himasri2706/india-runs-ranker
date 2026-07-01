@@ -185,19 +185,33 @@ if st.session_state.get('run_complete', False):
         
         st.markdown("### 🏆 Top 5 Matches")
         
-        # Render Premium Cards
+        # Render Premium Cards with Expandable Detailed Info
         for i in range(min(5, len(results))):
             r = results[i]
             feat = next((f for f in features_list if f['candidate_id'] == r['candidate_id']), {})
             
-            st.markdown(f"""
-            <div class="candidate-card">
-                <div class="score-badge">{(r['score']*100):.1f}% Match</div>
-                <div class="cand-id">#{i+1} — {r['candidate_id']}</div>
-                <div class="cand-title">💼 {feat.get('current_title', 'Unknown')} • ⏳ {feat.get('years_of_experience', 0):.1f} Yrs Exp</div>
-                <div class="reasoning-text"><b>AI Reasoning:</b> {r['reasoning']}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            with st.expander(f"#{i+1} — {r['candidate_id']}  |  {feat.get('current_title', 'Unknown')}  |  {(r['score']*100):.1f}% Match"):
+                st.markdown(f"""
+                <div class="candidate-card" style="margin-bottom:10px;">
+                    <div class="cand-title">💼 {feat.get('current_title', 'Unknown')} • ⏳ {feat.get('years_of_experience', 0):.1f} Yrs Exp</div>
+                    <div class="reasoning-text"><b>AI Reasoning:</b> {r['reasoning']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                st.markdown("#### Full Candidate Profile")
+                c1, c2 = st.columns(2)
+                raw = feat.get('raw_data', {})
+                prof = raw.get('profile', {})
+                sigs = raw.get('redrob_signals', {})
+                
+                with c1:
+                    st.write(f"**Company:** {prof.get('current_company', 'N/A')} ({prof.get('current_industry', 'N/A')})")
+                    st.write(f"**Location:** {prof.get('location', 'N/A')}")
+                    st.write(f"**AI Core Skills Detected:** {feat.get('n_ai_skills', 0)}")
+                with c2:
+                    st.write(f"**Response Rate:** {float(sigs.get('recruiter_response_rate', 0))*100:.0f}%")
+                    st.write(f"**GitHub Score:** {sigs.get('github_activity_score', 'N/A')}")
+                    st.write(f"**Open to Work:** {'Yes' if sigs.get('open_to_work_flag') else 'No'}")
             
         st.markdown("### 📊 Score Distribution (Top 50)")
         fig = px.bar(df.head(50), x='candidate_id', y='score', color='score', color_continuous_scale='Viridis', template='plotly_dark')
