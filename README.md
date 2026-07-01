@@ -26,6 +26,12 @@ To solve the classic "Vocabulary Mismatch" problem in Vector Search, this engine
 * **Aesthetics:** Stunning glassmorphic design built with **Tailwind CSS v4** and animated with **Framer Motion**.
 * **Analytics:** Beautiful data visualizations (Score Distributions, Experience vs. Match Scatter plots) powered by **Recharts**.
 
+## 🎨 UI Showcase
+*(Drag and drop a screenshot of the React Dashboard here before submitting!)*
+<p align="center">
+  <img src="https://via.placeholder.com/800x450.png?text=Replace+with+Screenshot+of+your+beautiful+React+App" alt="Dashboard UI Screenshot" width="800"/>
+</p>
+
 ### 4. 100% Offline Compliance
 Strictly adheres to Hackathon Rules: Zero network API calls to OpenAI/Gemini during execution. The sentence-transformer model is cached locally.
 
