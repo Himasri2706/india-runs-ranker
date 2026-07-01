@@ -1,65 +1,87 @@
-# India RUNS Hackathon - AI Candidate Ranking System
+# 🚀 India RUNS AI Ranker (Talent Intelligence AI)
 
-## Problem Statement
-The objective is to build a high-performance offline AI candidate ranking system capable of parsing 100,000 candidate profiles against a specified AI Engineer Job Description (JD). The system must run entirely offline, fit within a 16GB CPU constraint, complete within 5 minutes, and effectively filter out keyword-stuffing candidates, non-technical candidates, and candidates lacking behavioral availability.
+> **Hack2Skill x Redrob AI - The Data & AI Challenge**
 
-## Approach
-Our solution employs a **3-Layer Hybrid Scoring System**:
-1. **Semantic Profile Score (40%)**: We use `all-MiniLM-L6-v2` via `sentence-transformers` coupled with `FAISS` to execute fast vector similarity search between the JD and a synthesized textual representation of the candidate.
-2. **Structured Signal Score (40%)**: A rule-based engine scores title relevance, experience duration, skill verification, career trajectory, and location constraints. This layer is crucial for explicitly penalizing non-engineering roles and service-company dominance, while boosting actual product-company AI experience.
-3. **Behavioral Availability Multiplier (20%)**: A multiplier based on the candidate's recency of platform activity, response rates, and GitHub activity. A technically perfect candidate who hasn't logged in for 6 months will be severely down-weighted.
+An enterprise-grade, 100% offline Candidate Ranking Engine built with a **Two-Tower Dense + Sparse Hybrid Search Architecture**.
 
-## Why NOT Keyword Matching
-Keyword matching is easily gamed and lacks semantic understanding of a candidate's actual responsibilities. A "Marketing Manager" could list "Machine Learning" and "Python" to artificially inflate their score, despite having zero engineering capabilities. Our structured signal layer explicitly down-weights non-engineering titles and cross-references skills with verified assessments, while our semantic layer matches the *context* of the experience against the JD, effectively neutralizing keyword stuffers.
+![Talent AI Architecture](https://img.shields.io/badge/Architecture-Full_Stack-indigo.svg)
+![Offline Compliant](https://img.shields.io/badge/Offline_Compliant-100%25-green.svg)
+![AI Engine](https://img.shields.io/badge/AI_Engine-Hybrid_Search-fuchsia.svg)
 
-## Architecture Diagram
-```
-[ Candidates JSONL ] ---> (Streaming Reader, batch size 1000)
-                             |
-                             v
-[ Preprocessor ] -------> (Text Representation & Feature Dictionary)
-                             |
-                             v
-+-------------------------------------------------------------+
-| Layer 1: FAISS Vector Embedding & Cosine Similarity         |
-| Layer 2: Rule-Based Structured Scoring                      |
-| Layer 3: Behavioral Availability Multiplier                 |
-+-------------------------------------------------------------+
-                             |
-                             v
-[ Ranker ] -------------> (Score Aggregation & Sorting)
-                             |
-                             v
-[ output/submission.csv ]
-```
+## 🌟 Key Features
 
-## How to Run
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. Pre-download the model to the local cache (requires internet, run once):
-   ```bash
-   python download_model.py
-   ```
-3. Run the ranking system (fully offline):
-   ```bash
-   python rank.py --candidates path/to/candidates.jsonl --out output/submission.csv
-   ```
-4. Validate the output:
-   ```bash
-   python validate_submission.py output/submission.csv
-   ```
+### 1. Hybrid Search (Dense + Sparse)
+To solve the classic "Vocabulary Mismatch" problem in Vector Search, this engine uses a Two-Tower Retrieval system:
+* **70% Dense Scoring (Semantic):** Uses `all-MiniLM-L6-v2` via `sentence-transformers` to deeply understand the semantic meaning of the candidate's career history and the Job Description.
+* **30% Sparse Scoring (Lexical):** Uses `TfidfVectorizer` to do exact keyword matching on the fly, ensuring specific requirements (e.g., "PyTorch") aren't missed.
 
-## Reproduce Command
+### 2. Multi-Layer Ranking Algorithm
+* **Layer 1 (Hybrid Semantic Search):** Scores the candidate against the Job Description.
+* **Layer 2 (Structured Feature Extraction):** Evaluates Years of Experience and presence of core AI Skills.
+* **Layer 3 (Behavioral Signals):** Analyzes Redrob metrics (Response Rate, GitHub activity) and severely penalizes inactive/unresponsive candidates.
+
+### 3. Ultra-Premium Full-Stack UI
+* **Backend:** Blazing fast **FastAPI** REST API.
+* **Frontend:** Modern **React + Vite** SPA.
+* **Aesthetics:** Stunning glassmorphic design built with **Tailwind CSS v4** and animated with **Framer Motion**.
+* **Analytics:** Beautiful data visualizations (Score Distributions, Experience vs. Match Scatter plots) powered by **Recharts**.
+
+### 4. 100% Offline Compliance
+Strictly adheres to Hackathon Rules: Zero network API calls to OpenAI/Gemini during execution. The sentence-transformer model is cached locally.
+
+## 🛠️ How to Run Locally
+
+### Prerequisites
+* Python 3.10+
+* Node.js v20+
+
+### 1. Download AI Models (One-time setup)
+Before running, you must download the local AI weights to the `cache/` folder:
 ```bash
-python rank.py --candidates ./candidates.jsonl --out ./output/submission.csv
+python download_model.py
 ```
 
-## Scoring Breakdown
-- **Semantic Score**: 40%
-- **Structured Score**: 40% (Title 30%, Experience 20%, Skills 25%, Career Trajectory 15%, Location 10%)
-- **Behavioral Multiplier**: 20% (Combines Recency, Response Rate, Profile Completeness, GitHub Score, Open-to-work)
+### 2. Install Python Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-## Results
-(To be updated after running on final dataset)
+### 3. Install Frontend Dependencies
+```bash
+cd frontend
+npm install
+```
+
+### 4. Launch Full Stack (Windows)
+We have provided a convenient launcher script that starts both the FastAPI backend and the Vite frontend simultaneously:
+```bash
+start-fullstack.bat
+```
+
+Alternatively, run them separately:
+* **Backend:** `python api.py` (Runs on port 8000)
+* **Frontend:** `cd frontend && npm run dev` (Runs on port 5173)
+
+## 📦 Project Structure
+```
+├── src/
+│   ├── embedder.py          # Hybrid Search Logic (SentenceTransformers + TF-IDF)
+│   ├── ranker.py            # The 3-Layer Scoring Equation & Reasoning Engine
+│   ├── preprocess.py        # Text & Feature extraction from JSONL
+│   ├── structured_scorer.py # Layer 2 Scoring
+│   └── behavioral_scorer.py # Layer 3 Scoring
+├── frontend/                # React + Vite Web Application
+│   ├── src/App.jsx          # Main UI, Analytics Dashboard, and Leaderboard
+│   └── tailwind.config.js
+├── api.py                   # FastAPI Server wrapper for the AI Engine
+├── rank.py                  # CLI Orchestrator (For strict Hackathon validation)
+├── download_model.py        # Caches huggingface models offline
+└── start-fullstack.bat      # 1-Click Launchpad
+```
+
+## 📋 Hackathon Validation
+To validate against the strict Hackathon format (without the UI):
+```bash
+python rank.py --candidates <path_to_jsonl> --job_description <path_to_txt> --output submission.csv
+```
+This guarantees the exact required `submission.csv` format for `validate_submission.py`.
