@@ -34,7 +34,12 @@ def rank_candidates(candidates_features, semantic_scores):
         raw_sigs = feat.get('raw_data', {}).get('redrob_signals', {})
         resp_rate = float(raw_sigs.get('recruiter_response_rate', 0.0))
         
-        reasoning = f"{title} with {yoe:.1f} yrs; {n_ai} AI core skills; response rate {resp_rate:.2f}."
+        reasoning = (
+            f"{title} with {yoe:.1f} yrs exp. "
+            f"Hybrid Score: {base_score:.2f} (Dense+Sparse). "
+            f"AI Skills: {n_ai}. "
+            f"Response rate {resp_rate:.2f}."
+        )
         
         results.append({
             "candidate_id": feat["candidate_id"],
