@@ -137,6 +137,7 @@ if st.sidebar.button("✨ Run AI Ranking Engine", type="primary", use_container_
             progress_bar = st.progress(0)
             total_lines = len(content)
             
+            last_error = None
             for i, line in enumerate(content):
                 line = line.strip()
                 if not line: continue
@@ -145,7 +146,7 @@ if st.sidebar.button("✨ Run AI Ranking Engine", type="primary", use_container_
                     texts.append(build_candidate_text(cand))
                     features_list.append(extract_features(cand))
                 except Exception as e:
-                    pass
+                    last_error = str(e)
                 
                 if i % max(1, (total_lines // 20)) == 0:
                     progress_bar.progress(i / total_lines)
@@ -154,6 +155,8 @@ if st.sidebar.button("✨ Run AI Ranking Engine", type="primary", use_container_
                     
             if not texts:
                 st.error("No valid candidates found.")
+                if last_error:
+                    st.error(f"Error parsing file (Are you sure this is a JSONL file?): {last_error}")
                 st.stop()
                 
             sem_scores = embedder.embed_and_score_batch(texts)
