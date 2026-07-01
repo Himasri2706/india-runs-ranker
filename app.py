@@ -131,7 +131,7 @@ if st.sidebar.button("✨ Run AI Ranking Engine", type="primary", use_container_
             texts = []
             features_list = []
             
-            content = uploaded_file.getvalue().decode("utf-8").splitlines()
+            content = uploaded_file.getvalue().decode("utf-8", errors="replace").splitlines()
             
             # Progress bar for streaming
             progress_bar = st.progress(0)

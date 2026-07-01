@@ -62,7 +62,7 @@ def main():
     current_batch_features = []
     
     print("Processing candidates stream...")
-    with open(args.candidates, 'r', encoding='utf-8') as f:
+    with open(args.candidates, 'r', encoding='utf-8', errors='replace') as f:
         for line in tqdm(f, desc="Reading candidates"):
             line = line.strip()
             if not line: continue
