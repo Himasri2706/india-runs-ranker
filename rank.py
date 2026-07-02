@@ -49,7 +49,9 @@ def main():
     args = parser.parse_args()
 
     # Create output dir if not exists
-    os.makedirs(os.path.dirname(args.out), exist_ok=True)
+    out_dir = os.path.dirname(args.out)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
 
     print("Initializing offline embedding model...")
     embedder = CandidateEmbedder()
