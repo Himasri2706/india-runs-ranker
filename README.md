@@ -29,7 +29,7 @@ To solve the classic "Vocabulary Mismatch" problem in Vector Search, this engine
 ## 🎨 UI Showcase
 *(Drag and drop a screenshot of the React Dashboard here before submitting!)*
 <p align="center">
-  <img src="https://via.placeholder.com/800x450.png?text=Replace+with+Screenshot+of+your+beautiful+React+App" alt="Dashboard UI Screenshot" width="800"/>
+  <img src=""C:\Users\honey\Downloads\Screenshot 2026-07-02 100438.jpg"" alt="Dashboard UI Screenshot" width="800"/>
 </p>
 
 ### 4. 100% Offline Compliance
