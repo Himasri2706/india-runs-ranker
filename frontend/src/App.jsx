@@ -308,6 +308,18 @@ Requirements:
                                   <span className="font-bold text-indigo-400 mr-2">Engine Reasoning:</span> 
                                   {r.reasoning}
                                 </p>
+                                {r.extracted_keywords && r.extracted_keywords.length > 0 && (
+                                  <div className="mt-4 border-t border-indigo-500/20 pt-4">
+                                    <p className="text-sm font-bold text-indigo-300 mb-2">Explainable AI (Exact JD Match):</p>
+                                    <div className="flex flex-wrap gap-2">
+                                      {r.extracted_keywords.map((kw, i) => (
+                                        <span key={i} className="px-3 py-1 bg-green-500/20 border border-green-500/30 text-green-300 rounded-full text-xs font-bold uppercase tracking-wide">
+                                          {kw}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

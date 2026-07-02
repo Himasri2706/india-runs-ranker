@@ -7,6 +7,7 @@ from typing import List
 from src.preprocess import build_candidate_text, extract_features
 from src.embedder import CandidateEmbedder
 from src.ranker import rank_candidates
+from src.structured_scorer import check_core_ai_skills
 
 app = FastAPI(title="India RUNS AI Ranker API")
 
@@ -74,6 +75,10 @@ async def api_rank(
         feat = next((f for f in features_list if f['candidate_id'] == r['candidate_id']), {})
         raw_sigs = feat.get('raw_data', {}).get('redrob_signals', {})
         
+        # XAI Extraction: get exact matched keywords
+        raw_text = build_candidate_text(feat.get('raw_data', {}))
+        matched_keywords = list(set(check_core_ai_skills(raw_text)))
+        
         final_output.append({
             "rank": i + 1,
             "candidate_id": r['candidate_id'],
@@ -83,7 +88,8 @@ async def api_rank(
             "experience": feat.get('years_of_experience', 0),
             "response_rate": float(raw_sigs.get('recruiter_response_rate', 0)),
             "github_score": raw_sigs.get('github_activity_score', 0),
-            "ai_skills": feat.get('n_ai_skills', 0)
+            "ai_skills": feat.get('n_ai_skills', 0),
+            "extracted_keywords": matched_keywords
         })
 
     return {"status": "success", "results": final_output}

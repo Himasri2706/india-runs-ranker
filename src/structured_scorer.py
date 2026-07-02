@@ -1,5 +1,28 @@
 import math
 
+AI_CORE_SKILLS = ["embeddings", "vector search", "faiss", "sentence-transformers",
+                  "information retrieval", "ranking systems", "recommendation", "nlp", "llm", "rag",
+                  "fine-tuning", "pytorch", "python", "machine learning", "deep learning", "transformers",
+                  "bert", "elasticsearch", "pinecone", "qdrant", "weaviate", "milvus", "evaluation",
+                  "ndcg", "a/b testing", "search", "retrieval", "reranking"]
+
+def extract_experience(text):
+    text = str(text).lower()
+    if 'years of experience' in text:
+        try:
+            return float(text.split(' years of experience')[0].split()[-1])
+        except:
+            return 0.0
+    return 0.0
+
+def check_core_ai_skills(text):
+    text = str(text).lower()
+    matched = []
+    for skill in AI_CORE_SKILLS:
+        if skill in text:
+            matched.append(skill)
+    return matched
+
 def compute_structured_score(candidate, is_all_negative_titles=[False]):
     """
     Computes the Layer 2 rule-based structured score.
